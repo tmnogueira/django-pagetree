@@ -41,6 +41,9 @@ class Hierarchy(models.Model):
         except Section.DoesNotExist:
             return Section.add_root(label="Root",slug="",hierarchy=self)
 
+    def get_all_pageblocks(self):
+        return PageBlock.objects.filter(section__hierarchy=self)
+
     def get_top_level(self):
         return self.get_root().get_children()
 
@@ -231,6 +234,20 @@ class PageBlock(models.Model):
 
     def block(self):
         return self.content_object
+
+    def export(self, zipfile):
+        d = None
+        if hasattr(self.content_object, "export"):
+            d = self.content_object.export(zipfile)
+        d = d or {}
+        if hasattr(self.content_object, "export_template"):
+            t = get_template(self.content_object.export_template)
+            d['block'] = self
+            c = Context(d)
+            string = t.render(c)
+            zipfile.writestr("pageblocks/%s" % self.pk, string)
+        else:
+            return self.content_object.export()
 
     def render(self,**kwargs):
         if hasattr(self.content_object,"template_file"):
