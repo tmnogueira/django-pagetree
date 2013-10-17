@@ -1,3 +1,7 @@
+0.5.5
+
+* django 1.5 fixes
+
 0.5.4
 
 * added closing_children() to allow for a tricky
