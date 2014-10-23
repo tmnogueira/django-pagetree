@@ -3,7 +3,6 @@ from django.shortcuts import get_object_or_404
 from django.template import Context, loader
 from pagetree.models import Section, PageBlock
 from django.template.defaultfilters import slugify
-from django.utils import simplejson
 from django.core.urlresolvers import reverse
 import string
 
