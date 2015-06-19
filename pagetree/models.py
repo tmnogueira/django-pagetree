@@ -538,7 +538,14 @@ class Section(MP_Node):
             self.add_child_section_from_dict(c)
 
     def add_pageblock_from_dict(self, d):
-        target_type = d.get('block_type', '')
+        try:
+            target_type = d.get('block_type', '')
+        except AttributeError:
+            # If we can't call .get on the dictionary,
+            # it must not be a dictionary. Assume it's a pageblock,
+            # and turn it into a dict here.
+            d = d.as_dict()
+            target_type = d.get('block_type', '')
 
         # now we need to figure out which kind of pageblock to create
         found_pbclass = None
