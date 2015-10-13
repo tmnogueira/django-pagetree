@@ -1,4 +1,6 @@
 from django import template
+import six
+
 register = template.Library()
 
 
@@ -38,4 +40,4 @@ def is_section_unlocked(section, user):
         is_unlocked = True
 
     # Convert to 1 or 0 to parse it easily in the template.
-    return unicode(int(is_unlocked))
+    return six.u(int(is_unlocked))

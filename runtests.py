@@ -35,11 +35,7 @@ def main():
         COVERAGE_EXCLUDES_FOLDERS = ['migrations'],
         ROOT_URLCONF = 'pagetree.tests.urls',
         PAGEBLOCKS = ['pagetree.TestBlock', ],
-        SOUTH_TESTS_MIGRATE=False,
 
-        JENKINS_TASKS = (
-            'django_jenkins.tasks.with_coverage',
-        ),
         PROJECT_APPS = [
             'pagetree',
         ],
@@ -64,7 +60,7 @@ def main():
 
     # Fire off the tests
     call_command('test')
-    call_command('jenkins')
+    call_command('jenkins', '--enable-coverage')
 
 if __name__ == '__main__':
     main()

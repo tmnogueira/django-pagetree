@@ -10,6 +10,7 @@ request context passed through
 """
 
 from django import template
+import six
 
 register = template.Library()
 
@@ -25,7 +26,7 @@ class BaseNode(template.Node):
             context_dict.update(d)
         # can only take string keys
         for k in context_dict.keys():
-            if not isinstance(k, str) and not isinstance(k, unicode):
+            if not six.u(k):
                 del context_dict[k]
         return b, context_dict
 

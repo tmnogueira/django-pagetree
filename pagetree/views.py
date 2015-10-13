@@ -5,6 +5,7 @@ from django.template.context import RequestContext
 from django.template.defaultfilters import slugify
 from django.template.response import TemplateResponse
 from json import dumps, loads
+import six
 from pagetree.helpers import get_section_from_path
 from pagetree.forms import MoveSectionForm
 from pagetree.models import Section, PageBlock, Hierarchy, Version
@@ -40,7 +41,7 @@ def delete_pageblock(request, pageblock_id, success_url=None):
     if request.method == "POST":
         section = block.section
         section.save_version(request.user,
-                             activity="delete block [%s]" % unicode(block))
+                             activity="delete block [%s]" % six.u(block))
         try:
             block.block().delete()
         except AttributeError:
@@ -70,7 +71,7 @@ def import_pageblock_json(request, pageblock_id):
     block = get_object_or_404(PageBlock, id=pageblock_id)
     block.section.save_version(
         request.user,
-        activity="importing pageblock json [%s]" % unicode(block))
+        activity="importing pageblock json [%s]" % six.u(block))
     if request.method == "POST":
         if 'file' not in request.FILES:
             return HttpResponse("you must upload a json file")
@@ -87,7 +88,7 @@ def edit_pageblock(request, pageblock_id, success_url=None):
     section = block.section
     section.save_version(
         request.user,
-        activity="edit pageblock [%s]" % unicode(block))
+        activity="edit pageblock [%s]" % six.u(block))
     block.edit(request.POST, request.FILES)
     if success_url is None:
         success_url = section.get_edit_url()
@@ -117,7 +118,7 @@ def delete_section(request, section_id, success_url=None):
         if parent:
             parent.save_version(
                 request.user,
-                activity="delete child section [%s]" % unicode(section))
+                activity="delete child section [%s]" % six.u(section))
         section.delete()
         if success_url is None:
             if parent:

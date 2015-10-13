@@ -1,4 +1,4 @@
-from models import Hierarchy
+from pagetree.models import Hierarchy
 import warnings
 
 

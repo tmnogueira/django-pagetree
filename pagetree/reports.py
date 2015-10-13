@@ -1,14 +1,12 @@
 import abc
 
 from django.contrib.auth.models import User
-try:
-    from django.apps import apps
-except ImportError:
-    # Django <= 1.6
-    from django.db import models
+from django.apps import apps
 from django.contrib.contenttypes.models import ContentType
+from six import add_metaclass
 
 
+@add_metaclass(abc.ABCMeta)
 class ReportableInterface(object):
     """ Abstract base class for a reportable interface that can be added to
         a given pageblock to support dynamic discovery of reporting data
@@ -19,7 +17,6 @@ class ReportableInterface(object):
         3. register as part of the ReportableInterface
            ReportableInterface.register()
     """
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def report_metadata(self):
@@ -34,8 +31,8 @@ class ReportableInterface(object):
         return
 
 
+@add_metaclass(abc.ABCMeta)
 class ReportColumnInterface(object):
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def identifier(self):
