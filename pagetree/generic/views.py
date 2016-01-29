@@ -175,10 +175,8 @@ def generic_view_page(request, path, hierarchy="main",
 
 class SectionMixin(object):
     def get_section(self, path):
-        return get_section_from_path(
-            path,
-            hierarchy_name=self.hierarchy_name,
-            hierarchy_base=self.hierarchy_base)
+        h = get_object_or_404(Hierarchy, base_url=self.hierarchy_base)
+        return h.get_section_from_path(path)
 
     def get_extra_context(self):
         return self.extra_context

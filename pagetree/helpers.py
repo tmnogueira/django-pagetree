@@ -9,9 +9,13 @@ def get_hierarchy(name="main", base_url="/"):
         # a string or may already be a Hierarchy.
         # so let's be cool about that
         return name
-    return Hierarchy.objects.get_or_create(
-        name=name,
-        defaults=dict(base_url=base_url))[0]
+
+    try:
+        return Hierarchy.objects.get(base_url=base_url)
+    except Hierarchy.DoesNotExist:
+        return Hierarchy.objects.create(
+            name=name,
+            base_url=base_url)
 
 
 def get_section_from_path(path, hierarchy="main",
